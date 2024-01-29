@@ -1,0 +1,47 @@
+<template>
+    <div class="container">
+        <div class="slds-box slds-theme_default container__box">
+            <div class="slds-grid slds-wrap container__header">
+                <div class="slds-col slds-size_12-of-12 container__title slds-p-vertical_medium">
+                    <h2>{labelsList.FAQTitle}</h2>
+                </div>
+                <div class="slds-col slds-size_12-of-12">
+                    <lightning-input type="search" label="Search" onchange={handleSearch}></lightning-input>
+                </div>
+            </div>
+			<div class="container__content">
+				<template if:true={isVisible}>
+					<template for:each={visibleFAQs} for:item="faq">
+						<div key={faq.Id} class="slds-box slds-theme_default slds-m-top_medium">
+							<p class="slds-p-bottom_small"><strong>{faq.Question__c}</strong></p>
+							<p>
+								<lightning-formatted-rich-text
+									value={faq.Answer__c}>
+								</lightning-formatted-rich-text>
+							</p>
+						</div>
+					</template>
+				</template>
+				<template if:false={isVisible}>
+					<div class="container__warning--page">
+						<div class="container__warning--icon">
+							<svg class="slds-icon slds-icon-text-warning icon__size" aria-hidden="true">
+								<use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#warning"></use>
+							</svg>
+						</div>
+						<div class="container__warning--label">
+							<div class="container__text">
+								{labelsList.NoFAQsLabel}
+							</div>
+						</div>
+					</div>
+				</template>
+			</div>
+			<template if:true={isVisible}>
+				<div slot="footer" class="slds-var-m-horizontal_medium slds-p-vertical_medium">
+					<c-faq-pagination records={filteredFaqs} onupdate={updateFAQsHandler}></c-faq-pagination>
+				</div>
+			</template>
+        </div>
+    </div>
+</template>
